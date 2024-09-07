@@ -1,14 +1,21 @@
 // src/components/app/App.js
 
 import * as React from 'react';
+import { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Button } from 'react-native';
 import AddToUserList from '../userList/addToUserList';
 import Register from '../auth/Register';
+import Login from '../auth/Login';
 import { useSelector } from 'react-redux';
 
 function App() {
   const isAuthenticated = useSelector(state => state.users.isAuthenticated);
+  const [showLogin, setShowLogin] = useState(true);
+
+  const toggleAuthComponent = () => {
+    setShowLogin(!showLogin);
+  };
 
   return (
     <View style={styles.container}>
@@ -20,7 +27,13 @@ function App() {
           {/* Add other authenticated components here */}
         </>
       ) : (
-        <Register />
+        <>
+          {showLogin ? <Login /> : <Register />}
+          <Button
+            title={showLogin ? "Switch to Register" : "Switch to Login"}
+            onPress={toggleAuthComponent}
+          />
+        </>
       )}
     </View>
   );
