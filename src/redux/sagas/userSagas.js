@@ -10,19 +10,22 @@ import {
 // Fetch Users Saga
 function* fetchUsersSaga() {
   try {
-    const response = yield call(axios.get, '/api/users');
+    const response = yield call(axios.get, '/api/user');
     yield put({ type: FETCH_USERS_SUCCESS, payload: response.data });
   } catch (error) {
     yield put({ type: FETCH_USERS_FAILURE, payload: error.message });
   }
 }
-
+axios.defaults.baseURL = 'http://192.168.86.105:5001'; 
 // Create User Saga
 function* createUserSaga(action) {
   try {
-    const response = yield call(axios.post, '/api/users', action.payload);
+    console.log('Creating user with data:', action.payload);
+    const response = yield call(axios.post, '/api/user/register', action.payload);
+    console.log('User created successfully:', response.data);
     yield put({ type: CREATE_USER_SUCCESS, payload: response.data });
   } catch (error) {
+    console.error('Error creating user:', error.message);
     yield put({ type: CREATE_USER_FAILURE, payload: error.message });
   }
 }
@@ -30,7 +33,7 @@ function* createUserSaga(action) {
 // Update User Saga
 function* updateUserSaga(action) {
   try {
-    const response = yield call(axios.put, `/api/users/${action.payload.id}`, action.payload);
+    const response = yield call(axios.put, `/api/user/${action.payload.id}`, action.payload);
     yield put({ type: UPDATE_USER_SUCCESS, payload: response.data });
   } catch (error) {
     yield put({ type: UPDATE_USER_FAILURE, payload: error.message });
@@ -40,7 +43,7 @@ function* updateUserSaga(action) {
 // Delete User Saga
 function* deleteUserSaga(action) {
   try {
-    yield call(axios.delete, `/api/users/${action.payload.id}`);
+    yield call(axios.delete, `/api/user/${action.payload.id}`);
     yield put({ type: DELETE_USER_SUCCESS, payload: action.payload.id });
   } catch (error) {
     yield put({ type: DELETE_USER_FAILURE, payload: error.message });

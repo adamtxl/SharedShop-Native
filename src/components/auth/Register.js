@@ -12,6 +12,7 @@ const Register = () => {
   const dispatch = useDispatch();
 
   const handleRegister = () => {
+    console.log('Registering user:', { username, password, email });
     dispatch(createUser({ username, password, email }));
   };
 
