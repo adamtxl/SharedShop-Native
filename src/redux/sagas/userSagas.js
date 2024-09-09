@@ -5,6 +5,7 @@ import {
   CREATE_USER, CREATE_USER_SUCCESS, CREATE_USER_FAILURE,
   UPDATE_USER, UPDATE_USER_SUCCESS, UPDATE_USER_FAILURE,
   DELETE_USER, DELETE_USER_SUCCESS, DELETE_USER_FAILURE,
+  LOGIN_USER, LOGIN_USER_SUCCESS, LOGIN_USER_FAILURE,
 } from '../actions/userActions';
 
 // Fetch Users Saga
@@ -24,6 +25,10 @@ function* createUserSaga(action) {
     const response = yield call(axios.post, '/api/user/register', action.payload);
     console.log('User created successfully:', response.data);
     yield put({ type: CREATE_USER_SUCCESS, payload: response.data });
+
+    // Dispatch loginUser action to log in the user after successful registration
+    const { username, password } = action.payload;
+    yield put({ type: LOGIN_USER, payload: { username, password } });
   } catch (error) {
     console.error('Error creating user:', error.message);
     yield put({ type: CREATE_USER_FAILURE, payload: error.message });
@@ -50,10 +55,23 @@ function* deleteUserSaga(action) {
   }
 }
 
+function* loginUserSaga(action) {
+  try {
+    console.log('Logging in user with credentials:', action.payload);
+    const response = yield call(axios.post, '/api/user/login', action.payload);
+    console.log('User logged in successfully:', response.data);
+    yield put({ type: LOGIN_USER_SUCCESS, payload: response.data });
+  } catch (error) {
+    console.error('Error logging in user:', error.message);
+    yield put({ type: LOGIN_USER_FAILURE, payload: error.message });
+  }
+}
+
 // Root User Saga
 export default function* userSagas() {
   yield takeEvery(FETCH_USERS, fetchUsersSaga);
   yield takeEvery(CREATE_USER, createUserSaga);
   yield takeEvery(UPDATE_USER, updateUserSaga);
   yield takeEvery(DELETE_USER, deleteUserSaga);
+  yield takeEvery(LOGIN_USER, loginUserSaga);
 }
