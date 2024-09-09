@@ -4,7 +4,7 @@ import userReducer from './reducers/userReducer';
 // import userItemsReducer from './reducers/userItemsReducer';
 // import shoppingListReducer from './reducers/shoppingListReducer';
 import userSagas from './sagas/userSagas';
-// import userItemsSagas from './sagas/userItemsSagas';
+import userItemsSagas from './sagas/userItemsSagas';
 // import shoppingListSagas from './sagas/shoppingListSagas';
 
 const rootReducer = combineReducers({
@@ -20,7 +20,7 @@ const store = createStore(
 );
 
 sagaMiddleware.run(userSagas);
-// sagaMiddleware.run(userItemsSagas);
+sagaMiddleware.run(userItemsSagas);
 // sagaMiddleware.run(shoppingListSagas);
 
 export default store;

@@ -19,7 +19,7 @@ function App() {
 
   return (
     <View style={styles.container}>
-      <Text>Your home page is loading enough to render this text!</Text>
+      <Text style={styles.innertext}>Your home page is loading enough to render this text!</Text>
       <StatusBar style="auto" />
       {isAuthenticated ? (
         <>
@@ -42,9 +42,15 @@ function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'lightgray',
+    textAlign: 'center',
+    backgroundColor: 'darkblue',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  innertext: {
+    color: 'white',
+    fontSize: 20,
+    marginBottom: 20,
   },
 });
 

@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
     label: {
         marginBottom: 5,
         fontSize: 16,
+        color: 'white',
     },
     input: {
         height: 40,
@@ -55,6 +56,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         marginBottom: 15,
         paddingLeft: 8,
+        color: 'white',
     },
 });
 
