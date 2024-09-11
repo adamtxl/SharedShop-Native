@@ -8,7 +8,7 @@ import userItemsSagas from './sagas/userItemsSagas';
 // import shoppingListSagas from './sagas/shoppingListSagas';
 
 const rootReducer = combineReducers({
-  users: userReducer,
+  user: userReducer,
 
 });
 

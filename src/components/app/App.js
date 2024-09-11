@@ -10,7 +10,7 @@ import Login from '../auth/Login';
 import { useSelector } from 'react-redux';
 
 function App() {
-  const isAuthenticated = useSelector(state => state.users.isAuthenticated);
+  const isAuthenticated = useSelector(state => state.user.isAuthenticated);
   const [showLogin, setShowLogin] = useState(true);
 
   const toggleAuthComponent = () => {

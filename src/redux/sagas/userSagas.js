@@ -57,12 +57,10 @@ function* deleteUserSaga(action) {
 
 function* loginUserSaga(action) {
   try {
-    console.log('Logging in user with credentials:', action.payload);
     const response = yield call(axios.post, '/api/user/login', action.payload);
-    console.log('User logged in successfully:', response.data);
-    yield put({ type: LOGIN_USER_SUCCESS, payload: response.data });
+    console.log('Login response:', response.data); // Check the response contains user data
+    yield put({ type: LOGIN_USER_SUCCESS, payload: response.data.user }); // Ensure this contains user data
   } catch (error) {
-    console.error('Error logging in user:', error.message);
     yield put({ type: LOGIN_USER_FAILURE, payload: error.message });
   }
 }

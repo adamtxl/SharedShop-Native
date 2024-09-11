@@ -42,7 +42,7 @@ export const LOGOUT_USER = 'LOGOUT_USER';
 
 export const loginUser = (credentials) => ({
   type: LOGIN_USER,
-  payload: credentials,
+  payload: credentials, // This should be in the correct format expected by your API
 });
 
 export const logoutUser = () => ({

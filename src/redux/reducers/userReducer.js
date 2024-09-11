@@ -1,18 +1,22 @@
 // src/redux/reducers/userReducer.js
-
 import {
-  FETCH_USERS_SUCCESS, FETCH_USERS_FAILURE,
-  CREATE_USER_SUCCESS, CREATE_USER_FAILURE,
-  UPDATE_USER_SUCCESS, UPDATE_USER_FAILURE,
-  DELETE_USER_SUCCESS, DELETE_USER_FAILURE,
-  LOGIN_USER_SUCCESS, LOGIN_USER_FAILURE,
+  FETCH_USERS_SUCCESS,
+  FETCH_USERS_FAILURE,
+  CREATE_USER_SUCCESS,
+  CREATE_USER_FAILURE,
+  UPDATE_USER_SUCCESS,
+  UPDATE_USER_FAILURE,
+  DELETE_USER_SUCCESS,
+  DELETE_USER_FAILURE,
+  LOGIN_USER_SUCCESS,
+  LOGIN_USER_FAILURE,
 } from '../actions/userActions';
 
 const initialState = {
-  users: [],
+  user: null, // This key must match what you use in the root reducer
   loading: false,
   error: null,
-  isAuthenticated: false, // Add isAuthenticated state
+  isAuthenticated: false,
 };
 
 export default function userReducer(state = initialState, action) {
@@ -42,7 +46,7 @@ export default function userReducer(state = initialState, action) {
     case UPDATE_USER_SUCCESS:
       return {
         ...state,
-        users: state.users.map(user => 
+        users: state.users.map((user) =>
           user.id === action.payload.id ? action.payload : user
         ),
       };
@@ -54,7 +58,7 @@ export default function userReducer(state = initialState, action) {
     case DELETE_USER_SUCCESS:
       return {
         ...state,
-        users: state.users.filter(user => user.id !== action.payload),
+        users: state.users.filter((user) => user.id !== action.payload),
       };
     case DELETE_USER_FAILURE:
       return {
@@ -62,9 +66,11 @@ export default function userReducer(state = initialState, action) {
         error: action.payload,
       };
     case LOGIN_USER_SUCCESS:
+      console.log('User details from action payload:', action.payload);
       return {
         ...state,
-        isAuthenticated: true, // Set isAuthenticated to true on successful login
+        isAuthenticated: true,
+        user: action.payload, // Ensure this is set correctly
       };
     case LOGIN_USER_FAILURE:
       return {

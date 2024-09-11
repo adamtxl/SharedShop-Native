@@ -22,9 +22,12 @@ function* fetchUserItemsSaga() {
 // Create User Item Saga
 function* createUserItemSaga(action) {
   try {
+    console.log('Creating user item with data:', action.payload);
     const response = yield call(axios.post, '/api/user-item', action.payload);
+    console.log('User item created successfully:', response.data);
     yield put({ type: CREATE_USER_ITEM_SUCCESS, payload: response.data });
   } catch (error) {
+    console.error('Error creating user item:', error.message);
     yield put({ type: CREATE_USER_ITEM_FAILURE, payload: error.message });
   }
 }
@@ -32,9 +35,12 @@ function* createUserItemSaga(action) {
 // Update User Item Saga
 function* updateUserItemSaga(action) {
   try {
+    console.log('Updating user item with data:', action.payload);
     const response = yield call(axios.put, `/api/user-item/${action.payload.id}`, action.payload);
+    console.log('User item updated successfully:', response.data);
     yield put({ type: UPDATE_USER_ITEM_SUCCESS, payload: response.data });
   } catch (error) {
+    console.error('Error updating user item:', error.message);
     yield put({ type: UPDATE_USER_ITEM_FAILURE, payload: error.message });
   }
 }
@@ -42,9 +48,12 @@ function* updateUserItemSaga(action) {
 // Delete User Item Saga
 function* deleteUserItemSaga(action) {
   try {
+    console.log('Deleting user item with ID:', action.payload.id);
     yield call(axios.delete, `/api/user-item/${action.payload.id}`);
+    console.log('User item deleted successfully');
     yield put({ type: DELETE_USER_ITEM_SUCCESS, payload: action.payload.id });
   } catch (error) {
+    console.error('Error deleting user item:', error.message);
     yield put({ type: DELETE_USER_ITEM_FAILURE, payload: error.message });
   }
 }
