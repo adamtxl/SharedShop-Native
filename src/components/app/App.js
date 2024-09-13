@@ -1,17 +1,23 @@
 // src/components/app/App.js
 
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import AddToUserList from '../userList/addToUserList';
 import Register from '../auth/Register';
 import Login from '../auth/Login';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 function App() {
   const isAuthenticated = useSelector(state => state.user.isAuthenticated);
   const [showLogin, setShowLogin] = useState(true);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch({ type: 'FETCH_CATEGORIES' });
+  }, [dispatch]);
 
   const toggleAuthComponent = () => {
     setShowLogin(!showLogin);

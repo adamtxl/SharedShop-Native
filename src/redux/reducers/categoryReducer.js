@@ -1,5 +1,6 @@
-// categories.reducer.js
-const categoriesReducer = (state = [], action) => {
+// src/redux/reducers/categoryReducer.js
+
+const categoryReducer = (state = [], action) => {
     switch (action.type) {
       case 'SET_CATEGORIES':
         return action.payload;
@@ -8,4 +9,4 @@ const categoriesReducer = (state = [], action) => {
     }
   };
   
-  export default categoriesReducer;
+  export default categoryReducer;
