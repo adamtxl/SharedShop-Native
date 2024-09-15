@@ -1,15 +1,18 @@
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import createSagaMiddleware from 'redux-saga';
+
+//Reducers
 import userReducer from './reducers/userReducer';
-// import userItemsReducer from './reducers/userItemsReducer';
-// import shoppingListReducer from './reducers/shoppingListReducer';
+import categoriesReducer from './reducers/categoryReducer';
+
+//Sagas
 import userSagas from './sagas/userSagas';
 import userItemsSagas from './sagas/userItemsSagas';
-// import shoppingListSagas from './sagas/shoppingListSagas';
+import categoriesSaga from './sagas/categoriesSaga';
 
 const rootReducer = combineReducers({
   user: userReducer,
-
+  categories: categoriesReducer,
 });
 
 const sagaMiddleware = createSagaMiddleware();
@@ -21,6 +24,6 @@ const store = createStore(
 
 sagaMiddleware.run(userSagas);
 sagaMiddleware.run(userItemsSagas);
-// sagaMiddleware.run(shoppingListSagas);
+sagaMiddleware.run(categoriesSaga);
 
 export default store;
