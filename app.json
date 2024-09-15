@@ -1,6 +1,8 @@
+
+
 {
   "expo": {
-    "name": "SharedShop-frontend",
+    "name": "SharedShop",
     "slug": "SharedShop-frontend",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -12,16 +14,19 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.adamtxl.SharedShopfrontend"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.adamtxl.SharedShopfrontend"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     }
-  }
+  },
+  "name": "main"
 }

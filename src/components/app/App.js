@@ -1,30 +1,62 @@
 // src/components/app/App.js
-import * as React from 'react';
-import { Provider } from 'react-redux';
-import store from '../../redux/store';
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import AddToUserList from '../userList/addToUserList';
 
+import * as React from 'react';
+import { useState, useEffect } from 'react';
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, Text, View, Button } from 'react-native';
+import AddToUserList from '../userList/addToUserList';
+import Register from '../auth/Register';
+import Login from '../auth/Login';
+import { useSelector, useDispatch } from 'react-redux';
 
 function App() {
+  const isAuthenticated = useSelector(state => state.user.isAuthenticated);
+  const [showLogin, setShowLogin] = useState(true);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch({ type: 'FETCH_CATEGORIES' });
+  }, [dispatch]);
+
+  const toggleAuthComponent = () => {
+    setShowLogin(!showLogin);
+  };
+
   return (
-    <Provider store={store}>
- <View style={styles.container}>
-      <Text>Your home page is loading enough to render this text! </Text>
+    <View style={styles.container}>
+      <Text style={styles.innertext}>Your home page is loading enough to render this text!</Text>
       <StatusBar style="auto" />
-      <AddToUserList />
+      {isAuthenticated ? (
+        <>
+          <AddToUserList />
+          {/* Add other authenticated components here */}
+        </>
+      ) : (
+        <>
+          {showLogin ? <Login /> : <Register />}
+          <Button
+            title={showLogin ? "Switch to Register" : "Switch to Login"}
+            onPress={toggleAuthComponent}
+          />
+        </>
+      )}
     </View>
-    </Provider>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'lightgray',
+    textAlign: 'center',
+    backgroundColor: 'darkblue',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  innertext: {
+    color: 'white',
+    fontSize: 20,
+    marginBottom: 20,
   },
 });
 

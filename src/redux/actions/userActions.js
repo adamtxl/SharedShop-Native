@@ -32,3 +32,19 @@ export const deleteUser = (userId) => ({
   type: DELETE_USER,
   payload: { id: userId },
 });
+
+
+export const LOGIN_USER = 'LOGIN_USER';
+export const LOGIN_USER_SUCCESS = 'LOGIN_USER_SUCCESS';
+export const LOGIN_USER_FAILURE = 'LOGIN_USER_FAILURE';
+
+export const LOGOUT_USER = 'LOGOUT_USER';
+
+export const loginUser = (credentials) => ({
+  type: LOGIN_USER,
+  payload: credentials, // This should be in the correct format expected by your API
+});
+
+export const logoutUser = () => ({
+  type: LOGOUT_USER,
+});
