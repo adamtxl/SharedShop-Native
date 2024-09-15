@@ -1,7 +1,6 @@
 // src/components/app/App.js
 
-import * as React from 'react';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import AddToUserList from '../userList/addToUserList';

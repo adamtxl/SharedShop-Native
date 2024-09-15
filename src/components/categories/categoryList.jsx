@@ -2,30 +2,31 @@
 
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { fetchCategories } from '../../redux/actions/categoryActions';
+import { Picker } from '@react-native-picker/picker';
 
 const CategoryList = ({ selectedCategory, handleCategoryChange }) => {
-  const categories = useSelector((state) => state.category);
-  console.log('categories:', categories);
+  const categories = useSelector((state) => state.category.categories);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch({ type: 'FETCH_CATEGORIES' });
+    dispatch(fetchCategories());
   }, [dispatch]);
 
+  if (!categories) {
+    return <Text>Loading...</Text>;
+  }
+
   return (
-    <select
-      id="category"
-      name="category"
-      value={selectedCategory}
-      onChange={(e) => handleCategoryChange(e.target.value)}
+    <Picker
+      selectedValue={selectedCategory}
+      onValueChange={(itemValue) => handleCategoryChange(itemValue)}
     >
-      <option value="">Select Category</option>
+      <Picker.Item label="Select Category" value="" />
       {categories.map((category) => (
-        <option key={category.id} value={category.id}>
-          {category.name}
-        </option>
+        <Picker.Item key={category.id} label={category.name} value={category.id} />
       ))}
-    </select>
+    </Picker>
   );
 };
 
