@@ -1,10 +1,16 @@
 // src/components/categories/categoryList.jsx
 
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
 const CategoryList = ({ selectedCategory, handleCategoryChange }) => {
   const categories = useSelector((state) => state.category);
+  console.log('categories:', categories);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch({ type: 'FETCH_CATEGORIES' });
+  }, [dispatch]);
 
   return (
     <select
