@@ -13,7 +13,7 @@ function* fetchCategoriesSaga() {
     const response = yield call(axios.get, '/api/categories');
     console.log('API Response: ', response); // Check API response structure
     yield put({ type: FETCH_CATEGORIES_SUCCESS, payload: response.data });
-    console.log('response.data', response.datag) // Adjust this if response structure is different
+    console.log('response.data', response.data) // Adjust this if response structure is different
   } catch (error) {
     console.log('Error in saga: ', error);
     yield put({ type: FETCH_CATEGORIES_FAILURE, payload: error });

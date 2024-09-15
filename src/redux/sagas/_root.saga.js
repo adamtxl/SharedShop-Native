@@ -1,6 +1,6 @@
 import { all } from 'redux-saga/effects';
-import userSagas from './user.saga';
-import UserItemsSagas from './userItems.saga';
+import userSagas from './userSagas';
+import UserItemsSagas from './userItemsSagas';
 import categoriesSaga from './categoriesSaga';
 
 // rootSaga is the primary saga.

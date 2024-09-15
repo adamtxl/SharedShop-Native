@@ -1,18 +1,18 @@
+// src/redux/store.js
+
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import createSagaMiddleware from 'redux-saga';
+import rootSaga from './sagas/_root.saga';
 
-//Reducers
+// Reducers
 import userReducer from './reducers/userReducer';
-import categoriesReducer from './reducers/categoryReducer';
+import categoryReducer from './reducers/categoryReducer';
 
-//Sagas
-import userSagas from './sagas/userSagas';
-import userItemsSagas from './sagas/userItemsSagas';
-import categoriesSaga from './sagas/categoriesSaga';
+
 
 const rootReducer = combineReducers({
   user: userReducer,
-  categories: categoriesReducer,
+  category: categoryReducer,
 });
 
 const sagaMiddleware = createSagaMiddleware();
@@ -22,8 +22,6 @@ const store = createStore(
   applyMiddleware(sagaMiddleware)
 );
 
-sagaMiddleware.run(userSagas);
-sagaMiddleware.run(userItemsSagas);
-sagaMiddleware.run(categoriesSaga);
+sagaMiddleware.run(rootSaga);
 
 export default store;
