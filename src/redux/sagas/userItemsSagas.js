@@ -1,7 +1,7 @@
 // src/redux/sagas/userItemsSagas.js
 
 import { call, put, takeEvery } from 'redux-saga/effects';
-import axios from 'axios';
+import axios from '../../axiosConfig'; // Import the pre-configured axios
 import {
   FETCH_USER_ITEMS, FETCH_USER_ITEMS_SUCCESS, FETCH_USER_ITEMS_FAILURE,
   CREATE_USER_ITEM, CREATE_USER_ITEM_SUCCESS, CREATE_USER_ITEM_FAILURE,
@@ -12,7 +12,7 @@ import {
 // Fetch User Items Saga
 function* fetchUserItemsSaga() {
   try {
-    const response = yield call(axios.get, '/api/user-item');
+    const response = yield call(axios.get, '/api/user-items');
     yield put({ type: FETCH_USER_ITEMS_SUCCESS, payload: response.data });
   } catch (error) {
     yield put({ type: FETCH_USER_ITEMS_FAILURE, payload: error.message });
@@ -23,7 +23,7 @@ function* fetchUserItemsSaga() {
 function* createUserItemSaga(action) {
   try {
     console.log('Creating user item with data:', action.payload);
-    const response = yield call(axios.post, '/api/user-item', action.payload);
+    const response = yield call(axios.post, '/api/user-items', action.payload);
     console.log('User item created successfully:', response.data);
     yield put({ type: CREATE_USER_ITEM_SUCCESS, payload: response.data });
   } catch (error) {
@@ -36,7 +36,7 @@ function* createUserItemSaga(action) {
 function* updateUserItemSaga(action) {
   try {
     console.log('Updating user item with data:', action.payload);
-    const response = yield call(axios.put, `/api/user-item/${action.payload.id}`, action.payload);
+    const response = yield call(axios.put, `/api/user-items/${action.payload.id}`, action.payload);
     console.log('User item updated successfully:', response.data);
     yield put({ type: UPDATE_USER_ITEM_SUCCESS, payload: response.data });
   } catch (error) {
@@ -49,7 +49,7 @@ function* updateUserItemSaga(action) {
 function* deleteUserItemSaga(action) {
   try {
     console.log('Deleting user item with ID:', action.payload.id);
-    yield call(axios.delete, `/api/user-item/${action.payload.id}`);
+    yield call(axios.delete, `/api/user-items/${action.payload.id}`);
     console.log('User item deleted successfully');
     yield put({ type: DELETE_USER_ITEM_SUCCESS, payload: action.payload.id });
   } catch (error) {

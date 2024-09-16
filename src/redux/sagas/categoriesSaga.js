@@ -1,7 +1,7 @@
 // src/redux/sagas/categoriesSaga.js
 
 import { put, takeLatest, call } from 'redux-saga/effects';
-import axios from 'axios';
+import axios from '../../axiosConfig'; // Import the pre-configured axios
 import {
   FETCH_CATEGORIES,
   FETCH_CATEGORIES_SUCCESS,
@@ -11,9 +11,7 @@ import {
 function* fetchCategoriesSaga() {
   try {
     const response = yield call(axios.get, '/api/categories');
-    console.log('API Response: ', response); // Check API response structure
     yield put({ type: FETCH_CATEGORIES_SUCCESS, payload: response.data });
-    console.log('response.data', response.data) // Adjust this if response structure is different
   } catch (error) {
     console.log('Error in saga: ', error);
     yield put({ type: FETCH_CATEGORIES_FAILURE, payload: error });

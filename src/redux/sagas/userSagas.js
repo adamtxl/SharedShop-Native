@@ -1,5 +1,5 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
-import axios from 'axios';
+import axios from '../../axiosConfig'; // Import the pre-configured axios
 import { 
   FETCH_USERS, FETCH_USERS_SUCCESS, FETCH_USERS_FAILURE,
   CREATE_USER, CREATE_USER_SUCCESS, CREATE_USER_FAILURE,

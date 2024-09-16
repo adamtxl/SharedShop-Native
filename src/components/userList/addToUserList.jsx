@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import CategoryList from '../categories/categoryList';
+import { useDispatch } from 'react-redux';
+import { createUserItem } from '../../redux/actions/userItemsActions'; // Import the action creator
+
 
 const AddToUserList = () => {
   const [itemName, setItemName] = useState('');
   const [category, setCategory] = useState('');
   const [quantity, setQuantity] = useState('');
+  const dispatch = useDispatch(); // Initialize dispatch
+
 
   const handleInputChange = (name, value) => {
     if (name === 'itemName') setItemName(value);
@@ -17,11 +22,20 @@ const AddToUserList = () => {
   };
 
   const handleSubmit = () => {
-    // Handle form submission
-    console.log('Item added:', { itemName, category, quantity });
-    setItemName('');
-    setCategory('');
-    setQuantity('');
+	// Prepare new item data
+	const newItem = {
+	  item_name: itemName,     // Map `itemName` to `item_name`
+	  category_id: category,   // Map `category` to `category_id`
+	  user_id: 7,              // Make sure to include `user_id` (adjust as necessary)
+	};
+  
+	// Dispatch the action to create a new user item
+	dispatch(createUserItem(newItem));
+  
+	// Reset form fields
+	setItemName('');
+	setCategory('');
+	setQuantity('');
   };
 
   return (
@@ -49,6 +63,7 @@ const AddToUserList = () => {
 const styles = StyleSheet.create({
   container: {
     padding: 20,
+	width: '100%',
   },
   label: {
     marginBottom: 5,
@@ -60,6 +75,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 15,
     paddingLeft: 8,
+	backgroundColor: 'white',
   },
 });
 

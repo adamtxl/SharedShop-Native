@@ -7,12 +7,11 @@ import { Text, View, StyleSheet } from 'react-native';
 const CategoryList = ({ selectedCategory, handleCategoryChange }) => {
   const categories = useSelector((state) => state.category.categories);
   const dispatch = useDispatch();
+  
 
   useEffect(() => {
     dispatch(fetchCategories());
   }, [dispatch]);
-
-  console.log('Categories in component:', categories);
 
   if (!categories) {
     return <Text>Loading...</Text>;
@@ -36,13 +35,15 @@ const CategoryList = ({ selectedCategory, handleCategoryChange }) => {
 
 const styles = StyleSheet.create({
   pickerContainer: {
-    width: '80%', // Adjust width as needed
-    backgroundColor: 'white', // Light background for better visibility
-    borderRadius: 10, // Rounded corners
-    marginVertical: 10, // Some spacing above and below
+    backgroundColor: 'white',
+    borderRadius: 10,
+    marginVertical: 10,
+    borderWidth: 2, // Add this to visualize the picker container
+    borderColor: 'red', // Make it noticeable
   },
   picker: {
-    color: 'black', // Text color to contrast against white background
+    color: 'black', // Make sure this contrasts with the background
+    height: '50%', // Ensure it has enough height to be visible // Stretch it across the available width
   },
 });
 
