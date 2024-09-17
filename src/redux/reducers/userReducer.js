@@ -1,4 +1,5 @@
 // src/redux/reducers/userReducer.js
+
 import {
   FETCH_USERS_SUCCESS,
   FETCH_USERS_FAILURE,
@@ -10,10 +11,14 @@ import {
   DELETE_USER_FAILURE,
   LOGIN_USER_SUCCESS,
   LOGIN_USER_FAILURE,
+  LOGOUT_USER,
 } from '../actions/userActions';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
 const initialState = {
-  user: null, // This key must match what you use in the root reducer
+  user: null,
   loading: false,
   error: null,
   isAuthenticated: false,
@@ -70,12 +75,19 @@ export default function userReducer(state = initialState, action) {
       return {
         ...state,
         isAuthenticated: true,
-        user: action.payload, // Ensure this is set correctly
+        user: action.payload,
       };
     case LOGIN_USER_FAILURE:
       return {
         ...state,
         error: action.payload,
+      };
+    case LOGOUT_USER:
+      AsyncStorage.removeItem('user');
+      return {
+        ...state,
+        isAuthenticated: false,
+        user: null,
       };
     default:
       return state;

@@ -4,23 +4,37 @@ import { StyleSheet, Text, View, Button, ImageBackground } from 'react-native';
 import AddToUserList from '../userList/addToUserList';
 import Register from '../auth/Register';
 import Login from '../auth/Login';
+import DisplayUserItems from '../userList/displayUserList';
 import { useSelector, useDispatch } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { logoutUser, LOGIN_USER_SUCCESS } from '../../redux/actions/userActions';
 
-// Import your background image
 import backgroundImage from '../../../assets/backgrounds/sharedshopbackground.jpeg';
 
 function App() {
   const isAuthenticated = useSelector(state => state.user.isAuthenticated);
+  const user = useSelector(state => state.user.user);
   const [showLogin, setShowLogin] = useState(true);
-
   const dispatch = useDispatch();
 
   useEffect(() => {
+    const loadUserData = async () => {
+      const userData = await AsyncStorage.getItem('user');
+      if (userData) {
+        dispatch({ type: LOGIN_USER_SUCCESS, payload: JSON.parse(userData) });
+      }
+    };
+
+    loadUserData();
     dispatch({ type: 'FETCH_CATEGORIES' });
   }, [dispatch]);
 
   const toggleAuthComponent = () => {
     setShowLogin(!showLogin);
+  };
+
+  const handleLogout = () => {
+    dispatch(logoutUser());
   };
 
   return (
@@ -31,7 +45,8 @@ function App() {
         {isAuthenticated ? (
           <>
             <AddToUserList />
-            {/* Add other authenticated components here */}
+            <DisplayUserItems userId={user.id} />
+            <Button title="Logout" onPress={handleLogout} />
           </>
         ) : (
           <>
@@ -50,13 +65,13 @@ function App() {
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    width: '100%', // Make sure the background image covers the full width
-    height: '100%', // Make sure the background image covers the full height
+    width: '100%',
+    height: '100%',
   },
   container: {
     flex: 1,
     textAlign: 'center',
-    backgroundColor: 'transparent', // Transparent so that the background shows through
+    backgroundColor: 'transparent',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -64,6 +79,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 20,
     marginBottom: 20,
+    marginTop: 50,
   },
 });
 

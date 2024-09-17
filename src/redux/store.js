@@ -1,19 +1,7 @@
-// src/redux/store.js
-
-import { createStore, applyMiddleware, combineReducers } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
-import rootSaga from './sagas/_root.saga';
-
-// Reducers
-import userReducer from './reducers/userReducer';
-import categoryReducer from './reducers/categoryReducer';
-
-
-
-const rootReducer = combineReducers({
-  user: userReducer,
-  category: categoryReducer,
-});
+import rootReducer from './reducers/_root.reducer'; // Import the root reducer
+import rootSaga from './sagas/_root.saga'; // Import the root saga
 
 const sagaMiddleware = createSagaMiddleware();
 

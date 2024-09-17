@@ -45,6 +45,7 @@ export const loginUser = (credentials) => ({
   payload: credentials, // This should be in the correct format expected by your API
 });
 
+
 export const logoutUser = () => ({
   type: LOGOUT_USER,
 });

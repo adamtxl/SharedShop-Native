@@ -16,23 +16,22 @@ export const DELETE_USER_ITEM = 'DELETE_USER_ITEM';
 export const DELETE_USER_ITEM_SUCCESS = 'DELETE_USER_ITEM_SUCCESS';
 export const DELETE_USER_ITEM_FAILURE = 'DELETE_USER_ITEM_FAILURE';
 
-// src/redux/actions/userItemsActions.js
+export const fetchUserItems = (userId) => ({
+  type: FETCH_USER_ITEMS,
+  payload: { userId },
+});
 
-export const fetchUserItems = () => ({
-    type: FETCH_USER_ITEMS,
-  });
-  
-  export const createUserItem = (item) => ({
-    type: CREATE_USER_ITEM,
-    payload: item,
-  });
-  
-  export const updateUserItem = (item) => ({
-    type: UPDATE_USER_ITEM,
-    payload: item,
-  });
-  
-  export const deleteUserItem = (itemId) => ({
-    type: DELETE_USER_ITEM,
-    payload: { id: itemId },
-  });
+export const createUserItem = (item) => ({
+  type: CREATE_USER_ITEM,
+  payload: item,
+});
+
+export const updateUserItem = (item) => ({
+  type: UPDATE_USER_ITEM,
+  payload: item,
+});
+
+export const deleteUserItem = (itemId) => ({
+  type: DELETE_USER_ITEM,
+  payload: { id: itemId },
+});

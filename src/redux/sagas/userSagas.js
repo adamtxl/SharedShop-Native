@@ -7,6 +7,8 @@ import {
   DELETE_USER, DELETE_USER_SUCCESS, DELETE_USER_FAILURE,
   LOGIN_USER, LOGIN_USER_SUCCESS, LOGIN_USER_FAILURE,
 } from '../actions/userActions';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 // Fetch Users Saga
 function* fetchUsersSaga() {
@@ -60,6 +62,9 @@ function* loginUserSaga(action) {
     const response = yield call(axios.post, '/api/user/login', action.payload);
     console.log('Login response:', response.data); // Check the response contains user data
     yield put({ type: LOGIN_USER_SUCCESS, payload: response.data.user }); // Ensure this contains user data
+
+    // Save user data to AsyncStorage
+    yield call(AsyncStorage.setItem, 'user', JSON.stringify(response.data.user));
   } catch (error) {
     yield put({ type: LOGIN_USER_FAILURE, payload: error.message });
   }
