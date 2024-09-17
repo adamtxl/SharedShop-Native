@@ -16,7 +16,7 @@ function App() {
   const user = useSelector(state => state.user.user);
   const [showLogin, setShowLogin] = useState(true);
   const dispatch = useDispatch();
-
+  console.log(showLogin);
   useEffect(() => {
     const loadUserData = async () => {
       const userData = await AsyncStorage.getItem('user');
@@ -38,27 +38,23 @@ function App() {
   };
 
   return (
-    <ImageBackground source={backgroundImage} style={styles.background}>
-      <View style={styles.container}>
-        <Text style={styles.innertext}>Your home page is loading enough to render this text!</Text>
-        <StatusBar style="auto" />
-        {isAuthenticated ? (
-          <>
-            <AddToUserList />
-            <DisplayUserItems userId={user.id} />
-            <Button title="Logout" onPress={handleLogout} />
-          </>
-        ) : (
-          <>
-            {showLogin ? <Login /> : <Register />}
-            <Button
-              title={showLogin ? "Switch to Register" : "Switch to Login"}
-              onPress={toggleAuthComponent}
-            />
-          </>
-        )}
-      </View>
-    </ImageBackground>
+    <View style={[styles.container, { flex: 1 }]}>
+      <Text style={styles.innertext}>Your home page is loading enough to render this text!</Text>
+      <StatusBar style="auto" />
+      {isAuthenticated ? (
+        <>
+          <AddToUserList />
+          <View style={{ marginVertical: 20 }} /> {/* Add some spacing */}
+          <DisplayUserItems userId={user.id} />
+          <Button title="Logout" onPress={handleLogout} />
+        </>
+      ) : (
+        <>
+          {showLogin ? <Login /> : <Register />}
+          <Button title={showLogin ? "Switch to Register" : "Switch to Login"} onPress={toggleAuthComponent} />
+        </>
+      )}
+    </View>
   );
 }
 

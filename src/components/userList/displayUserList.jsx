@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserItems } from '../../redux/actions/userItemsActions';
-import { Card } from 'react-native-paper';
 
 const DisplayUserItems = ({ userId }) => {
   const dispatch = useDispatch();
@@ -11,21 +10,14 @@ const DisplayUserItems = ({ userId }) => {
   const error = useSelector(state => state.userItems.error);
 
   useEffect(() => {
-    console.log('Fetching user items for userId:', userId);
     dispatch(fetchUserItems(userId));
   }, [dispatch, userId]);
 
-  useEffect(() => {
-    console.log('User items:', userItems);
-  }, [userItems]);
-
   const renderItem = ({ item }) => (
-    <Card style={styles.card}>
-      <Card.Title title={item.item_name} />
-      <Card.Content>
-        <Text style={styles.itemText}>{item.description || "No description available"}</Text>
-      </Card.Content>
-    </Card>
+    <View>
+      <Text>{item.item_name}</Text>  {/* Ensure this is always inside <Text> */}
+      <Text>{item.description || "No description available"}</Text> {/* Ensure this is inside <Text> */}
+    </View>
   );
 
   if (loading) {
@@ -41,12 +33,14 @@ const DisplayUserItems = ({ userId }) => {
   }
 
   return (
-    <FlatList
-      data={userItems}
-      renderItem={renderItem}
-      keyExtractor={item => item.id.toString()}
-      contentContainerStyle={styles.listContainer}
-    />
+    <View style={{ flex: 1 }}>
+      <FlatList
+        data={userItems}
+        renderItem={renderItem}
+        keyExtractor={item => item.id.toString()}
+        contentContainerStyle={styles.listContainer}
+      />
+    </View>
   );
 };
 
@@ -54,15 +48,6 @@ const styles = StyleSheet.create({
   listContainer: {
     padding: 20,
     width: '100%',
-  },
-  card: {
-    marginBottom: 15,
-    padding: 10,
-    backgroundColor: '#f9f9f9',
-    borderRadius: 5,
-  },
-  itemText: {
-    fontSize: 16,
   },
 });
 

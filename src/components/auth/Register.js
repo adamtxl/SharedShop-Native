@@ -1,5 +1,3 @@
-// src/components/auth/Register.js
-
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import { useDispatch } from 'react-redux';
