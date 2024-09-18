@@ -10,15 +10,23 @@ const DisplayUserItems = ({ userId }) => {
   const error = useSelector(state => state.userItems.error);
 
   useEffect(() => {
-    dispatch(fetchUserItems(userId));
+    if (userId) {
+      dispatch(fetchUserItems(userId));
+    }
   }, [dispatch, userId]);
 
-  const renderItem = ({ item }) => (
-    <View>
-      <Text>{item.item_name}</Text>
-      <Text>{item.description || "No description available"}</Text>
-    </View>
-  );
+  const renderItem = ({ item }) => {
+    if (!item) {
+      return <Text>No item data available</Text>;
+    }
+
+    return (
+      <View>
+        <Text>{item.item_name || 'Unnamed Item'}</Text>
+        <Text>{item.description ? item.description : 'No description available'}</Text>
+      </View>
+    );
+  };
 
   if (loading) {
     return <Text>Loading...</Text>;
@@ -32,14 +40,12 @@ const DisplayUserItems = ({ userId }) => {
     return <Text>No items found.</Text>;
   }
 
-  console.log('Rendering user items:', userItems); // Debugging log
-
   return (
     <View style={{ flex: 1 }}>
       <FlatList
         data={userItems}
         renderItem={renderItem}
-        keyExtractor={item => item.id.toString()}
+        keyExtractor={item => (item && item.id ? item.id.toString() : Math.random().toString())}
         contentContainerStyle={styles.listContainer}
       />
     </View>

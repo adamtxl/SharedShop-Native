@@ -7,7 +7,7 @@ const ShoppingListPage = ({ navigation }) => {
 
   const addItem = () => {
     if (itemName) {
-      setShoppingList([...shoppingList, { name: itemName, id: Date.now() }]);
+      setShoppingList([...shoppingList, { name: itemName || 'Unnamed Item', id: Date.now() }]);
       setItemName(''); // Reset input
     }
   };
@@ -30,11 +30,14 @@ const ShoppingListPage = ({ navigation }) => {
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <TouchableOpacity onPress={() => openItemDetails(item)}>
-            <Text>{item.name}</Text>
+            {/* Ensure the name is wrapped inside <Text> */}
+            <Text>{item.name || 'Unnamed Item'}</Text>
           </TouchableOpacity>
         )}
       />
       <Button title="Manage Items" onPress={() => navigation.navigate('ManageItems')} />
+      {/* Add a button to navigate back to Home */}
+      <Button title="Back to Home" onPress={() => navigation.navigate('Home')} />
     </View>
   );
 };
