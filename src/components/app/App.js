@@ -1,22 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button, ImageBackground } from 'react-native';
+import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
 import AddToUserList from '../userList/addToUserList';
 import Register from '../auth/Register';
 import Login from '../auth/Login';
-import DisplayUserItems from '../userList/displayUserList';
+import DisplayUserItems from '../userList/displayUserList'; // Ensure this uses FlatList internally
 import { useSelector, useDispatch } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { logoutUser, LOGIN_USER_SUCCESS } from '../../redux/actions/userActions';
-
-import backgroundImage from '../../../assets/backgrounds/sharedshopbackground.jpeg';
 
 function App() {
   const isAuthenticated = useSelector(state => state.user.isAuthenticated);
   const user = useSelector(state => state.user.user);
   const [showLogin, setShowLogin] = useState(true);
   const dispatch = useDispatch();
-  console.log(showLogin);
+  
   useEffect(() => {
     const loadUserData = async () => {
       const userData = await AsyncStorage.getItem('user');
@@ -37,45 +35,56 @@ function App() {
     dispatch(logoutUser());
   };
 
-  return (
-    <View style={[styles.container, { flex: 1 }]}>
+  const renderHeader = () => (
+    <View style={styles.headerContainer}>
       <Text style={styles.innertext}>Your home page is loading enough to render this text!</Text>
-      <StatusBar style="auto" />
-      {isAuthenticated ? (
+      {isAuthenticated && (
         <>
-          <AddToUserList />
-          <View style={{ marginVertical: 20 }} /> {/* Add some spacing */}
-          <DisplayUserItems userId={user.id} />
+          <Text>Welcome {user.username}!</Text>
           <Button title="Logout" onPress={handleLogout} />
-        </>
-      ) : (
-        <>
-          {showLogin ? <Login /> : <Register />}
-          <Button title={showLogin ? "Switch to Register" : "Switch to Login"} onPress={toggleAuthComponent} />
+          <AddToUserList />
         </>
       )}
+    </View>
+  );
+
+  const renderAuthButtons = () => (
+    <View>
+      {showLogin ? <Login /> : <Register />}
+      <Button title={showLogin ? 'Register' : 'Login'} onPress={toggleAuthComponent} />
+    </View>
+  );
+
+  return (
+    <View style={styles.container}>
+      <StatusBar style="auto" />
+      <FlatList
+        data={[]}
+        ListHeaderComponent={renderHeader}
+        ListFooterComponent={!isAuthenticated && renderAuthButtons}
+        renderItem={null} // You can leave this as null since you're only using header and footer
+        keyExtractor={() => 'dummy'} // Avoids warnings about missing key
+      />
+      {isAuthenticated && <DisplayUserItems userId={user.id} />}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-    width: '100%',
-    height: '100%',
-  },
   container: {
     flex: 1,
-    textAlign: 'center',
     backgroundColor: 'transparent',
-    alignItems: 'center',
     justifyContent: 'center',
   },
   innertext: {
-    color: 'white',
+    color: 'black',
     fontSize: 20,
     marginBottom: 20,
     marginTop: 50,
+  },
+  headerContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 

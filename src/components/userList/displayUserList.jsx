@@ -15,8 +15,8 @@ const DisplayUserItems = ({ userId }) => {
 
   const renderItem = ({ item }) => (
     <View>
-      <Text>{item.item_name}</Text>  {/* Ensure this is always inside <Text> */}
-      <Text>{item.description || "No description available"}</Text> {/* Ensure this is inside <Text> */}
+      <Text>{item.item_name}</Text>
+      <Text>{item.description || "No description available"}</Text>
     </View>
   );
 
@@ -31,6 +31,8 @@ const DisplayUserItems = ({ userId }) => {
   if (!userItems || userItems.length === 0) {
     return <Text>No items found.</Text>;
   }
+
+  console.log('Rendering user items:', userItems); // Debugging log
 
   return (
     <View style={{ flex: 1 }}>
