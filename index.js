@@ -2,10 +2,11 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Provider, useDispatch } from 'react-redux';
-import { Button } from 'react-native'; // Import the standard Button component
+import { Button } from 'react-native'; 
 import { AppRegistry } from 'react-native';
 import App from './src/components/app/App';
 import ShoppingListPage from './src/components/shoppingList/ShoppingListPage';
+import CreateShoppingList from './src/components/shoppingList/CreateShoppingList'; 
 import ManageItemsPage from './src/components/userList/ManageItemsPage';
 import store from './src/redux/store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -32,9 +33,9 @@ const RootNavigator = () => {
             title: 'Home',
             headerRight: () => (
               <Button
-                title="Logout" // Title must be a string
+                title="Logout" 
                 onPress={handleLogout}
-                color="#fff" // Optional: Adjust button color if needed
+                color="#fff"
               />
             ),
           }}
@@ -58,6 +59,20 @@ const RootNavigator = () => {
           component={ManageItemsPage}
           options={{
             title: 'Manage Items',
+            headerRight: () => (
+              <Button
+                title="Logout"
+                onPress={handleLogout}
+                color="#fff"
+              />
+            ),
+          }}
+        />
+        <Stack.Screen
+          name="CreateShoppingList" // Add this screen
+          component={CreateShoppingList} // Use the newly created component
+          options={{
+            title: 'Create New List',
             headerRight: () => (
               <Button
                 title="Logout"

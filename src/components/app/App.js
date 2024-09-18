@@ -4,12 +4,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch, useSelector } from 'react-redux';
 import { LOGIN_USER_SUCCESS } from '../../redux/actions/userActions';
 import DisplayUserItems from '../userList/displayUserList'; // Correct path
+import { useNavigation } from '@react-navigation/native'; // Navigation hook
 
 const App = () => {
   const [showLogin, setShowLogin] = useState(true);
   const isAuthenticated = useSelector(state => state.user.isAuthenticated);
   const user = useSelector(state => state.user.user);
   const dispatch = useDispatch();
+  const navigation = useNavigation(); // For handling navigation
 
   useEffect(() => {
     const loadUserData = async () => {
@@ -26,6 +28,15 @@ const App = () => {
   const handleLogout = () => {
     dispatch({ type: 'LOGOUT_USER' });
     AsyncStorage.removeItem('user');
+    navigation.navigate('Login'); // Navigate back to login on logout
+  };
+
+  const navigateToManageItems = () => {
+    navigation.navigate('ManageItems');
+  };
+
+  const navigateToShoppingLists = () => {
+    navigation.navigate('ShoppingList');
   };
 
   return (
@@ -34,6 +45,8 @@ const App = () => {
         <>
           <Text>Welcome {user?.username || 'User'}</Text> 
           <DisplayUserItems userId={user?.id} /> 
+          <Button title="Manage Items" onPress={navigateToManageItems} />
+          <Button title="Shopping Lists" onPress={navigateToShoppingLists} />
           <Button title="Logout" onPress={handleLogout} /> 
         </>
       ) : (

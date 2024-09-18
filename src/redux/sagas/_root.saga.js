@@ -2,6 +2,7 @@ import { all } from 'redux-saga/effects';
 import userSagas from './userSagas';
 import UserItemsSagas from './userItemsSagas';
 import categoriesSaga from './categoriesSaga';
+import { shoppingListSagas } from './shoppingListSagas';
 
 // rootSaga is the primary saga.
 // It bundles up all of the other sagas so our project can use them.
@@ -14,5 +15,6 @@ export default function* rootSaga() {
         userSagas(),
         UserItemsSagas(),
         categoriesSaga(),
+        shoppingListSagas(),
     ]);
 }
