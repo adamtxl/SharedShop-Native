@@ -7,7 +7,7 @@ import { AppRegistry } from 'react-native';
 import App from './src/components/app/App';
 import ShoppingListPage from './src/components/shoppingList/ShoppingListPage';
 import CreateShoppingList from './src/components/shoppingList/CreateShoppingList'; 
-import ManageItemsPage from './src/components/userList/ManageItemsPage';
+import ManageItemsPage from './src/components/userList/ManageMyItems';
 import store from './src/redux/store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { logoutUser } from './src/redux/actions/userActions';

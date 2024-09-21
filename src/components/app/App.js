@@ -46,7 +46,7 @@ const App = ({ navigation }) => {
           <>
             <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>Welcome {user?.username || 'User'}</Text> 
             <DisplayUserItems userId={user?.id} /> 
-            <Button title="Manage Items" onPress={navigateToManageItems} />
+            <Button title="Manage My Items" onPress={navigateToManageItems} />
             <Button title="Shopping Lists" onPress={navigateToShoppingLists} />
             <Button title="Logout" onPress={handleLogout} /> 
           </>
