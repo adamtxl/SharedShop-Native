@@ -19,3 +19,27 @@ export const createShoppingList = (listData) => ({
   type: CREATE_SHOPPING_LIST,
   payload: listData,
 });
+
+
+// Action Types for Items
+export const UPDATE_ITEM = 'UPDATE_ITEM';
+export const UPDATE_ITEM_SUCCESS = 'UPDATE_ITEM_SUCCESS';
+export const UPDATE_ITEM_FAILURE = 'UPDATE_ITEM_FAILURE';
+
+export const DELETE_ITEM = 'DELETE_ITEM';
+export const DELETE_ITEM_SUCCESS = 'DELETE_ITEM_SUCCESS';
+export const DELETE_ITEM_FAILURE = 'DELETE_ITEM_FAILURE';
+
+// Action Creators for Items
+
+// Update an Item
+export const updateItem = (itemData) => ({
+  type: UPDATE_ITEM,
+  payload: itemData,
+});
+
+// Delete an Item
+export const deleteItem = (itemId) => ({
+  type: DELETE_ITEM,
+  payload: itemId,
+});

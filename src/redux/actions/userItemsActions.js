@@ -26,9 +26,9 @@ export const createUserItem = (item) => ({
   payload: item,
 });
 
-export const updateUserItem = (item) => ({
-  type: UPDATE_USER_ITEM,
-  payload: item,
+export const updateUserItem = (updatedItem) => ({
+  type: 'UPDATE_USER_ITEM',
+  payload: updatedItem // No need to separate `id`
 });
 
 export const deleteUserItem = (itemId) => ({

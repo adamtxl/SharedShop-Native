@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
+import { View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUserItems } from '../../redux/actions/userItemsActions';
+import { fetchUserItems, updateUserItem } from '../../redux/actions/userItemsActions';
+import ItemList from './ItemList';
+import AddToShoppingList from './AddToShoppingList';
+import EditItemModal from './EditItemModal';
 
-const DisplayUserItems = ({ userId, isEditingShoppingList = false, onAddToList }) => {
+const DisplayUserItems = ({ userId, context }) => {
   const dispatch = useDispatch();
   const userItems = useSelector(state => state.userItems.items);
-  const loading = useSelector(state => state.userItems.loading);
-  const error = useSelector(state => state.userItems.error);
-  const [expandedItemId, setExpandedItemId] = useState(null);
-  const [quantities, setQuantities] = useState({}); // Store item quantities here
+  const [expandedItems, setExpandedItems] = useState({});
+  const [editItem, setEditItem] = useState(null);
+  const [quantities, setQuantities] = useState({});
 
   useEffect(() => {
     if (userId) {
@@ -17,138 +19,54 @@ const DisplayUserItems = ({ userId, isEditingShoppingList = false, onAddToList }
     }
   }, [dispatch, userId]);
 
-  const toggleExpand = (id) => {
-    setExpandedItemId(expandedItemId === id ? null : id);
+  const toggleExpand = (itemId) => {
+    setExpandedItems(prevState => ({
+      ...prevState,
+      [itemId]: !prevState[itemId],
+    }));
   };
 
-  const handleQuantityChange = (itemId, quantity) => {
-    setQuantities({
-      ...quantities,
-      [itemId]: quantity, // Track quantity for each item
-    });
+  const handleQuantityChange = (itemId, value) => {
+    setQuantities({ ...quantities, [itemId]: value });
   };
 
-  const renderItem = ({ item }) => {
-    if (!item) {
-      return <Text>No item data available</Text>;
-    }
-  
-    const isExpanded = expandedItemId === item.id;
-  
-    return (
-      <TouchableOpacity onPress={() => toggleExpand(item.id)} style={styles.accordionHeader}>
-        <View>
-          <Text style={styles.itemName}>{item.item_name || 'Unnamed Item'}</Text>
-          {isExpanded && (
-            <View style={styles.expandedContent}>
-              <Text style={styles.label}>Description:</Text>
-              <Text>{item.description || 'No description available'}</Text>
-              <Text style={styles.label}>Category:</Text>
-              <Text>{item.category || 'No category assigned'}</Text>
-  
-              {/* Buttons for editing or adding to shopping list */}
-              <View style={styles.actionButtons}>
-                {/* Edit Button */}
-                <TouchableOpacity
-                  style={styles.editButton}
-                  onPress={() => onEditItem(item.id)} // Trigger edit mode here
-                >
-                  <Text style={styles.buttonText}>Edit</Text>
-                </TouchableOpacity>
-  
-                {isEditingShoppingList && (
-                  <>
-                    <Text style={styles.label}>Quantity:</Text>
-                    <TextInput
-                      style={styles.quantityInput}
-                      placeholder="Enter quantity"
-                      keyboardType="numeric"
-                      value={quantities[item.id] || ''}
-                      onChangeText={(value) => handleQuantityChange(item.id, value)}
-                    />
-                    <TouchableOpacity
-                      style={styles.addButton}
-                      onPress={() => onAddToList(item.id, quantities[item.id] || 1)} // Pass quantity
-                    >
-                      <Text style={styles.buttonText}>Add to Shopping List</Text>
-                    </TouchableOpacity>
-                  </>
-                )}
-              </View>
-            </View>
-          )}
-        </View>
-      </TouchableOpacity>
-    );
+  const handleAddToList = (itemId, quantity) => {
+    console.log(`Item ${itemId} added to list with quantity: ${quantity}`);
   };
 
-  if (loading) {
-    return <Text>Loading...</Text>;
-  }
+  const handleEdit = (item) => {
+    setEditItem(item);
+  };
 
-  if (error) {
-    return <Text>Error: {error}</Text>;
-  }
-
-  if (!userItems || userItems.length === 0) {
-    return <Text>No items found.</Text>;
-  }
+  const handleSaveEdit = (updatedItem) => {
+    dispatch(updateUserItem(updatedItem)); // Don't pass `id` separately, it's already part of `updatedItem`
+    setEditItem(null);
+  };
 
   return (
-    <View style={{ flex: 1 }}>
-      <FlatList
-        data={userItems}
-        renderItem={renderItem}
-        keyExtractor={item => (item && item.id ? item.id.toString() : Math.random().toString())}
-        contentContainerStyle={styles.listContainer}
+    <View>
+      <ItemList
+        items={userItems}
+        expandedItems={expandedItems}
+        onToggleExpand={toggleExpand}
+        onEdit={handleEdit}
+      />
+      {context === 'createShoppingList' && (
+        <AddToShoppingList
+          item={editItem}
+          quantities={quantities}
+          onQuantityChange={handleQuantityChange}
+          onAddToList={handleAddToList}
+        />
+      )}
+      <EditItemModal
+        visible={!!editItem}
+        item={editItem}
+        onSave={handleSaveEdit}
+        onCancel={() => setEditItem(null)}
       />
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  listContainer: {
-    padding: 20,
-    width: '100%',
-  },
-  accordionHeader: {
-    padding: 15,
-    borderWidth: 1,
-    borderRadius: 5,
-    borderColor: '#ddd',
-    marginVertical: 5,
-    backgroundColor: '#f9f9f9',
-  },
-  itemName: {
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-  expandedContent: {
-    marginTop: 10,
-  },
-  label: {
-    fontWeight: 'bold',
-    marginTop: 5,
-  },
-  quantityInput: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginVertical: 10,
-    paddingHorizontal: 10,
-    width: '100%',
-  },
-  addButton: {
-    marginTop: 10,
-    padding: 10,
-    backgroundColor: '#007BFF',
-    borderRadius: 5,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-  },
-});
 
 export default DisplayUserItems;
