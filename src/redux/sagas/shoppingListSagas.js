@@ -43,6 +43,7 @@ function* updateItemSaga(action) {
     });
 
     yield put({ type: 'UPDATE_ITEM_SUCCESS', payload: response.data });
+    yield put({ type: 'FETCH_USER_ITEMS', payload: { user_id } });
   } catch (error) {
     console.error('Saga: Error updating user item:', error.message);
     yield put({ type: 'UPDATE_ITEM_FAILURE', payload: error.message });

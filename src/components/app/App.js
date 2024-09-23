@@ -7,6 +7,7 @@ import DisplayUserItems from '../userList/displayUserList'; // Correct path
 import LogoutButton from '../auth/LogoutButton'; // Import LogoutButton
 import Login from '../auth/Login'; // Import Login component
 import Register from '../auth/Register'; // Import Register component
+import Welcome from '../welcome/Welcome'; // Import Welcome component
 
 const App = ({ navigation }) => {
   const [showLogin, setShowLogin] = useState(true);
@@ -44,10 +45,11 @@ const App = ({ navigation }) => {
       <ImageBackground source={require('../../../assets/backgrounds/sharedshopbackground.jpeg')} style={{ width: '100%', height: '100%' }}>
         {isAuthenticated ? (
           <>
-            <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>Welcome {user?.username || 'User'}</Text> 
-            <DisplayUserItems userId={user?.id} /> 
-            <Button title="Manage My Items" onPress={navigateToManageItems} />
-            <Button title="Shopping Lists" onPress={navigateToShoppingLists} />
+           <Welcome 
+          user={user} 
+          navigateToManageItems={() => navigation.navigate('ManageItems')} 
+          navigateToShoppingLists={() => navigation.navigate('ShoppingList')} 
+        /> 
             <Button title="Logout" onPress={handleLogout} /> 
           </>
         ) : (

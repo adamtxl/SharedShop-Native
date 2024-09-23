@@ -12,7 +12,7 @@ const ItemList = ({ items, onToggleExpand, expandedItems, onEdit }) => {
             {expandedItems[item.id] && (
               <View style={styles.expandedContent}>
                 <Text>Description: {item.description}</Text>
-                <Text>Category: {item.category || 'No category assigned'}</Text>
+                <Text>Category: {item.category_name || 'No category assigned'}</Text>
                 <Button title="Edit" onPress={() => onEdit(item)} />
               </View>
             )}

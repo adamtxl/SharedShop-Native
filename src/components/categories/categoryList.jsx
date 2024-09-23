@@ -8,7 +8,6 @@ const CategoryList = ({ selectedCategory, handleCategoryChange }) => {
   const categories = useSelector((state) => state.category.categories);
   const dispatch = useDispatch();
   
-
   useEffect(() => {
     dispatch(fetchCategories());
   }, [dispatch]);
@@ -38,12 +37,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 10,
     marginVertical: 10,
-    borderWidth: 2, // Add this to visualize the picker container
-    borderColor: 'red', // Make it noticeable
+    borderWidth: 2,
+    borderColor: 'gray',
+    padding: 0, // Remove padding so content fits inside the border
   },
   picker: {
-    color: 'black', // Make sure this contrasts with the background
-    height: '50%', // Ensure it has enough height to be visible // Stretch it across the available width
+    height: 200, // Adjust the height to make sure the picker items are visible
+    width: '100%', // Ensure it stretches to fill the width
   },
 });
 

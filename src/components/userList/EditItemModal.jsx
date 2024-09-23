@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, Modal, StyleSheet } from 'react-native';
+import CategoryList from '../categories/categoryList'; // Import CategoryList component
 
 const EditItemModal = ({ visible, item, onSave, onCancel }) => {
   const [editItem, setEditItem] = useState(item);
@@ -9,6 +10,11 @@ const EditItemModal = ({ visible, item, onSave, onCancel }) => {
       setEditItem(item); // Sync modal state with selected item
     }
   }, [item]);
+
+  // Function to handle category change
+  const handleCategoryChange = (selectedCategory) => {
+    setEditItem({ ...editItem, category_id: selectedCategory }); // Set the selected category_id
+  };
 
   return (
     <Modal visible={visible} transparent>
@@ -27,12 +33,16 @@ const EditItemModal = ({ visible, item, onSave, onCancel }) => {
             onChangeText={(text) => setEditItem({ ...editItem, description: text })}
             style={styles.input}
           />
-          <TextInput
-            placeholder="Category"
-            value={editItem?.category || ''}
-            onChangeText={(text) => setEditItem({ ...editItem, category: text })}
-            style={styles.input}
-          />
+          
+          <Text style={{ alignSelf: 'flex-start' }}>Category:</Text>
+          {/* Use CategoryList for category selection */}
+          <View style={styles.categoryPickerContainer}>
+            <CategoryList
+              selectedCategory={editItem?.category_id || ''}
+              handleCategoryChange={handleCategoryChange}
+            />
+          </View>
+
           <Button title="Save" onPress={() => onSave(editItem)} />
           <Button title="Cancel" onPress={onCancel} />
         </View>
@@ -61,6 +71,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
     marginVertical: 10,
+  },
+  categoryPickerContainer: {
+    width: '100%', // Ensure the picker stretches to fill the available width
+   
   },
 });
 
