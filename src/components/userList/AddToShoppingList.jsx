@@ -6,6 +6,7 @@ const AddToShoppingList = ({ item, quantities, onQuantityChange, onAddToList }) 
 
   return (
     <View style={styles.container}>
+      <Text style={styles.label}>Item Name: {item.item_name}</Text>
       <Text style={styles.label}>Quantity:</Text>
       <TextInput
         style={styles.quantityInput}
@@ -13,6 +14,8 @@ const AddToShoppingList = ({ item, quantities, onQuantityChange, onAddToList }) 
         value={quantities[item.id]?.toString() || ''}
         onChangeText={(value) => onQuantityChange(item.id, value)}
       />
+      
+      {/* Button to Add the Item to the Shopping List */}
       <TouchableOpacity onPress={() => onAddToList(item.id, quantities[item.id] || 1)}>
         <Text style={styles.addButtonText}>Add to Shopping List</Text>
       </TouchableOpacity>
@@ -37,6 +40,8 @@ const styles = StyleSheet.create({
   addButtonText: {
     color: '#007BFF',
     fontWeight: 'bold',
+    textAlign: 'center',
+    paddingVertical: 10,
   },
 });
 

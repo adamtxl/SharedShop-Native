@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, FlatList, TouchableOpacity, Button, StyleSheet } from 'react-native';
 
-const ItemList = ({ items, onToggleExpand, expandedItems, onEdit }) => {
+const ItemList = ({ items, onToggleExpand, expandedItems, onEdit, onDelete }) => {
   return (
     <FlatList
       data={items}
@@ -14,6 +14,7 @@ const ItemList = ({ items, onToggleExpand, expandedItems, onEdit }) => {
                 <Text>Description: {item.description}</Text>
                 <Text>Category: {item.category_name || 'No category assigned'}</Text>
                 <Button title="Edit" onPress={() => onEdit(item)} />
+                <Button title="Delete" color="red" onPress={() => onDelete(item.id)} />
               </View>
             )}
           </View>

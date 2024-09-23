@@ -1,5 +1,3 @@
-// shoppingListReducer.js
-
 import {
   FETCH_SHOPPING_LISTS,
   FETCH_SHOPPING_LISTS_SUCCESS,
@@ -13,6 +11,9 @@ import {
   DELETE_ITEM,
   DELETE_ITEM_SUCCESS,
   DELETE_ITEM_FAILURE,
+  ADD_ITEMS_TO_SHOPPING_LIST,
+  ADD_ITEMS_TO_SHOPPING_LIST_SUCCESS,
+  ADD_ITEMS_TO_SHOPPING_LIST_FAILURE, // Add these two
 } from '../actions/shoppingListActions';
 
 const initialState = {
@@ -27,6 +28,7 @@ const shoppingListReducer = (state = initialState, action) => {
     case CREATE_SHOPPING_LIST:
     case UPDATE_ITEM:
     case DELETE_ITEM:
+    case ADD_ITEMS_TO_SHOPPING_LIST: // Add case for adding items to shopping list
       return {
         ...state,
         isLoading: true,
@@ -40,7 +42,14 @@ const shoppingListReducer = (state = initialState, action) => {
         error: null,
         isLoading: false,
       };
-      
+
+    case ADD_ITEMS_TO_SHOPPING_LIST_SUCCESS:
+      return {
+        ...state,
+        isLoading: false, // Action succeeded, stop loading
+        error: null,
+      };
+
     case UPDATE_ITEM_SUCCESS:
       return {
         ...state,
@@ -58,17 +67,19 @@ const shoppingListReducer = (state = initialState, action) => {
         error: null,
         isLoading: false,
       };
-      
+
+    // Handle failures
     case FETCH_SHOPPING_LISTS_FAILURE:
     case CREATE_SHOPPING_LIST_FAILURE:
     case UPDATE_ITEM_FAILURE:
     case DELETE_ITEM_FAILURE:
+    case ADD_ITEMS_TO_SHOPPING_LIST_FAILURE: // Handle add items failure
       return {
         ...state,
         error: action.payload,
         isLoading: false,
       };
-      
+
     default:
       return state;
   }

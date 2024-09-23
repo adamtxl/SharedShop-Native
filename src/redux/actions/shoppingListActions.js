@@ -43,3 +43,13 @@ export const deleteItem = (itemId) => ({
   type: DELETE_ITEM,
   payload: itemId,
 });
+
+export const ADD_ITEMS_TO_SHOPPING_LIST = 'ADD_ITEMS_TO_SHOPPING_LIST';
+export const ADD_ITEMS_TO_SHOPPING_LIST_SUCCESS = 'ADD_ITEMS_TO_SHOPPING_LIST_SUCCESS';
+export const ADD_ITEMS_TO_SHOPPING_LIST_FAILURE = 'ADD_ITEMS_TO_SHOPPING_LIST_FAILURE';
+
+// Action creator to add items to the shopping list
+export const addItemsToShoppingList = (listId, items) => ({
+  type: ADD_ITEMS_TO_SHOPPING_LIST,
+  payload: { listId, items },
+});

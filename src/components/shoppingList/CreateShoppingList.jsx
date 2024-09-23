@@ -1,28 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, Alert } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import DisplayUserList from '../userList/displayUserList'; // Ensure this matches the actual file name
-import moment from 'moment'; // for formatting the date
+import { useDispatch } from 'react-redux';
+import { createShoppingList } from '../../redux/actions/shoppingListActions'; // Import the createShoppingList action
+import DisplayUserItems from '../userList/displayUserItems'; // Make sure path matches
+import moment from 'moment';
 
 const CreateShoppingList = ({ navigation }) => {
   const [listName, setListName] = useState('');
-  const [isListCreated, setIsListCreated] = useState(false);
+  const [shoppingListId, setShoppingListId] = useState(null); // Save shoppingList ID after creation
   const [createdDate, setCreatedDate] = useState(null);
   const [userId, setUserId] = useState(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchUserId = async () => {
-      try {
-        const user = await AsyncStorage.getItem('user');
-        if (user) {
-          const parsedUser = JSON.parse(user);
-          setUserId(parsedUser.id);
-        }
-      } catch (error) {
-        console.error('Failed to fetch userId from AsyncStorage:', error);
+      const user = await AsyncStorage.getItem('user');
+      if (user) {
+        const parsedUser = JSON.parse(user);
+        setUserId(parsedUser.id);
       }
     };
-
     fetchUserId();
   }, []);
 
@@ -31,38 +28,35 @@ const CreateShoppingList = ({ navigation }) => {
       Alert.alert('Error', 'Please enter a list name');
       return;
     }
-    setIsListCreated(true);
-    setCreatedDate(moment().format('MMMM Do YYYY, h:mm:ss a')); // easy to read date
+
+    // Dispatch the create shopping list action
+    const listData = { user_id: userId, list_name: listName };
+    dispatch(createShoppingList(listData, setShoppingListId)); // Pass setShoppingListId to get the list ID
+
+    setCreatedDate(moment().format('MMMM Do YYYY, h:mm:ss a'));
   };
 
-  if (!userId) {
-    return <Text>Loading...</Text>;
-  }
+  if (!userId) return <Text>Loading...</Text>;
 
   return (
     <View style={{ flex: 1, padding: 20 }}>
-      {!isListCreated ? (
+      {!shoppingListId ? (
         <>
-          <Text style={{ fontSize: 18 }}>Create a New Shopping List</Text>
+          <Text>Create a New Shopping List</Text>
           <TextInput
             placeholder="Enter list name"
             value={listName}
             onChangeText={setListName}
-            style={{
-              height: 40,
-              borderColor: 'gray',
-              borderWidth: 1,
-              marginVertical: 20,
-              paddingHorizontal: 10,
-            }}
+            style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginVertical: 20, paddingHorizontal: 10 }}
           />
           <Button title="Create List" onPress={createList} />
         </>
       ) : (
         <>
-          <Text style={{ fontSize: 18 }}>List Name: {listName}</Text>
-          <Text style={{ marginVertical: 10 }}>Created on: {createdDate}</Text>
-          <DisplayUserList userId={userId} context="createShoppingList" />
+          <Text>List Name: {listName}</Text>
+          <Text>Created on: {createdDate}</Text>
+          {/* Display items and allow user to add items to this shopping list */}
+          <DisplayUserItems userId={userId} context="createShoppingList" shoppingListId={shoppingListId} />
           <Button title="Go Back" onPress={() => navigation.goBack()} />
         </>
       )}

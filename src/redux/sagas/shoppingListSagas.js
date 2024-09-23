@@ -3,7 +3,8 @@ import {
   FETCH_SHOPPING_LISTS, FETCH_SHOPPING_LISTS_SUCCESS, FETCH_SHOPPING_LISTS_FAILURE, 
   CREATE_SHOPPING_LIST, CREATE_SHOPPING_LIST_SUCCESS, CREATE_SHOPPING_LIST_FAILURE, 
   UPDATE_ITEM, UPDATE_ITEM_SUCCESS, UPDATE_ITEM_FAILURE, 
-  DELETE_ITEM, DELETE_ITEM_SUCCESS, DELETE_ITEM_FAILURE 
+  DELETE_ITEM, DELETE_ITEM_SUCCESS, DELETE_ITEM_FAILURE,
+  ADD_ITEMS_TO_SHOPPING_LIST, ADD_ITEMS_TO_SHOPPING_LIST_SUCCESS, ADD_ITEMS_TO_SHOPPING_LIST_FAILURE
 } from '../actions/shoppingListActions';
 import axios from '../../axiosConfig'; // Your axiosConfig
 
@@ -17,6 +18,15 @@ function* fetchShoppingListsSaga(action) {
   }
 }
 
+function* addItemsToShoppingListSaga(action) {
+  try {
+    const { listId, items } = action.payload;
+    yield call(axios.post, `/api/shopping-list/${listId}/add-items`, { items });
+    yield put({ type: ADD_ITEMS_TO_SHOPPING_LIST_SUCCESS });
+  } catch (error) {
+    yield put({ type: ADD_ITEMS_TO_SHOPPING_LIST_FAILURE, payload: error.message });
+  }
+}
 // Saga to handle creating a new shopping list
 function* createShoppingListSaga(action) {
   try {
@@ -66,4 +76,6 @@ export function* shoppingListSagas() {
   yield takeLatest(CREATE_SHOPPING_LIST, createShoppingListSaga);
   yield takeLatest(UPDATE_ITEM, updateItemSaga);
   yield takeLatest(DELETE_ITEM, deleteItemSaga);
+  yield takeLatest(ADD_ITEMS_TO_SHOPPING_LIST, addItemsToShoppingListSaga);
+
 }
