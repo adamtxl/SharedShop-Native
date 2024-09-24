@@ -8,7 +8,8 @@ import App from './src/components/app/App';
 import ShoppingListPage from './src/components/shoppingList/ShoppingListPage';
 import CreateShoppingList from './src/components/shoppingList/CreateShoppingList';
 import ManageItemsPage from './src/components/userList/ManageMyItems';
-import AddToUserList from './src/components/userList/addToUserList';
+import AddToUserList from './src/components/userList/addToUserList'; // Ensure correct casing
+import ShoppingListDetails from './src/components/shoppingList/ShoppingListDetails'; // Ensure correct casing
 import store from './src/redux/store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { logoutUser } from './src/redux/actions/userActions';
@@ -62,6 +63,14 @@ const RootNavigator = () => {
 				<Stack.Screen
 					name='CreateShoppingList' // Add this screen
 					component={CreateShoppingList} // Use the newly created component
+					options={{
+						title: 'Create New List',
+						headerRight: () => <Button title='Logout' onPress={handleLogout} color='#fff' />,
+					}}
+				/>
+					<Stack.Screen
+					name='ShoppingListDetails' // Add this screen
+					component={ShoppingListDetails} // Use the newly created component
 					options={{
 						title: 'Create New List',
 						headerRight: () => <Button title='Logout' onPress={handleLogout} color='#fff' />,

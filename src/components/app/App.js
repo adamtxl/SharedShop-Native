@@ -3,7 +3,7 @@ import { View, Button, Text, ImageBackground } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch, useSelector } from 'react-redux';
 import { LOGIN_USER_SUCCESS } from '../../redux/actions/userActions';
-import DisplayUserItems from '../userList/displayUserList'; // Correct path
+import DisplayUserItems from '../userList/DisplayUserItems'; // Correct path
 import LogoutButton from '../auth/LogoutButton'; // Import LogoutButton
 import Login from '../auth/Login'; // Import Login component
 import Register from '../auth/Register'; // Import Register component

@@ -4,7 +4,11 @@ import {
   CREATE_SHOPPING_LIST, CREATE_SHOPPING_LIST_SUCCESS, CREATE_SHOPPING_LIST_FAILURE, 
   UPDATE_ITEM, UPDATE_ITEM_SUCCESS, UPDATE_ITEM_FAILURE, 
   DELETE_ITEM, DELETE_ITEM_SUCCESS, DELETE_ITEM_FAILURE,
-  ADD_ITEMS_TO_SHOPPING_LIST, ADD_ITEMS_TO_SHOPPING_LIST_SUCCESS, ADD_ITEMS_TO_SHOPPING_LIST_FAILURE
+  ADD_ITEMS_TO_SHOPPING_LIST, ADD_ITEMS_TO_SHOPPING_LIST_SUCCESS, ADD_ITEMS_TO_SHOPPING_LIST_FAILURE,
+  FETCH_SHOPPING_LIST_DETAILS,
+  FETCH_SHOPPING_LIST_DETAILS_SUCCESS,
+  FETCH_SHOPPING_LIST_DETAILS_FAILURE,
+
 } from '../actions/shoppingListActions';
 import axios from '../../axiosConfig'; // Your axiosConfig
 
@@ -32,6 +36,7 @@ function* createShoppingListSaga(action) {
   try {
     const response = yield call(axios.post, `/api/shopping-list`, action.payload);
     yield put({ type: CREATE_SHOPPING_LIST_SUCCESS, payload: response.data });
+    console.log('Saga: Created shopping list:', response.data); // For debugging
   } catch (error) {
     yield put({ type: CREATE_SHOPPING_LIST_FAILURE, payload: error.message });
   }
@@ -70,6 +75,17 @@ function* deleteItemSaga(action) {
   }
 }
 
+function* fetchShoppingListDetailsSaga(action) {
+  try {
+    const response = yield call(axios.get, `/api/shopping-list/${action.payload}`);
+    yield put({ type: FETCH_SHOPPING_LIST_DETAILS_SUCCESS, payload: response.data });
+  } catch (error) {
+    yield put({ type: FETCH_SHOPPING_LIST_DETAILS_FAILURE, payload: error.message });
+  }
+}
+
+
+
 // Watcher saga
 export function* shoppingListSagas() {
   yield takeLatest(FETCH_SHOPPING_LISTS, fetchShoppingListsSaga);
@@ -77,5 +93,5 @@ export function* shoppingListSagas() {
   yield takeLatest(UPDATE_ITEM, updateItemSaga);
   yield takeLatest(DELETE_ITEM, deleteItemSaga);
   yield takeLatest(ADD_ITEMS_TO_SHOPPING_LIST, addItemsToShoppingListSaga);
-
+  yield takeLatest(FETCH_SHOPPING_LIST_DETAILS, fetchShoppingListDetailsSaga);
 }

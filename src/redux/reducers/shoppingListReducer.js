@@ -13,73 +13,110 @@ import {
   DELETE_ITEM_FAILURE,
   ADD_ITEMS_TO_SHOPPING_LIST,
   ADD_ITEMS_TO_SHOPPING_LIST_SUCCESS,
-  ADD_ITEMS_TO_SHOPPING_LIST_FAILURE, // Add these two
+  ADD_ITEMS_TO_SHOPPING_LIST_FAILURE,
+  FETCH_SHOPPING_LIST_DETAILS,
+  FETCH_SHOPPING_LIST_DETAILS_SUCCESS,
+  FETCH_SHOPPING_LIST_DETAILS_FAILURE
 } from '../actions/shoppingListActions';
 
 const initialState = {
-  lists: [],
-  error: null,
-  isLoading: false,
+  lists: [],               // Holds all shopping lists
+  details: {},             // Holds details of a specific shopping list
+  error: null,             // Error messages (if any)
+  isLoading: false,        // Loading state indicator
 };
 
 const shoppingListReducer = (state = initialState, action) => {
   switch (action.type) {
+
+    // --- Shopping List Actions ---
     case FETCH_SHOPPING_LISTS:
     case CREATE_SHOPPING_LIST:
-    case UPDATE_ITEM:
-    case DELETE_ITEM:
-    case ADD_ITEMS_TO_SHOPPING_LIST: // Add case for adding items to shopping list
+    case ADD_ITEMS_TO_SHOPPING_LIST:
       return {
         ...state,
         isLoading: true,
+        error: null,        // Clear errors on new actions
       };
-      
+
+    // --- Fetch All Shopping Lists Success ---
     case FETCH_SHOPPING_LISTS_SUCCESS:
-    case CREATE_SHOPPING_LIST_SUCCESS:
       return {
         ...state,
         lists: action.payload,
-        error: null,
         isLoading: false,
+        error: null,
       };
 
-    case ADD_ITEMS_TO_SHOPPING_LIST_SUCCESS:
+    // --- Create Shopping List Success ---
+    case CREATE_SHOPPING_LIST_SUCCESS:
       return {
         ...state,
-        isLoading: false, // Action succeeded, stop loading
+        lists: [...state.lists, action.payload],  // Add the new list to existing lists
+        isLoading: false,
         error: null,
       };
 
+    // --- Add Items to Shopping List Success ---
+    case ADD_ITEMS_TO_SHOPPING_LIST_SUCCESS:
+      console.log('Items added to shopping list');
+      return {
+        ...state,
+        isLoading: false,
+        error: null,
+      };
+
+    // --- Shopping List Details ---
+    case FETCH_SHOPPING_LIST_DETAILS:
+      return {
+        ...state,
+        isLoading: true,
+        error: null,
+      };
+
+    // --- Fetch Shopping List Details Success ---
+    case FETCH_SHOPPING_LIST_DETAILS_SUCCESS:
+      return {
+        ...state,
+        details: action.payload,
+        isLoading: false,
+        error: null,
+      };
+
+    // --- Update Item Success ---
     case UPDATE_ITEM_SUCCESS:
       return {
         ...state,
-        lists: state.lists.map((list) =>
+        lists: state.lists.map(list =>
           list.id === action.payload.id ? action.payload : list
         ),
-        error: null,
         isLoading: false,
+        error: null,
       };
-      
+
+    // --- Delete Item Success ---
     case DELETE_ITEM_SUCCESS:
       return {
         ...state,
-        lists: state.lists.filter((list) => list.id !== action.payload),
-        error: null,
+        lists: state.lists.filter(list => list.id !== action.payload),
         isLoading: false,
+        error: null,
       };
 
-    // Handle failures
+    // --- Error Handling ---
     case FETCH_SHOPPING_LISTS_FAILURE:
     case CREATE_SHOPPING_LIST_FAILURE:
+    case ADD_ITEMS_TO_SHOPPING_LIST_FAILURE:
+    case FETCH_SHOPPING_LIST_DETAILS_FAILURE:
     case UPDATE_ITEM_FAILURE:
     case DELETE_ITEM_FAILURE:
-    case ADD_ITEMS_TO_SHOPPING_LIST_FAILURE: // Handle add items failure
       return {
         ...state,
         error: action.payload,
         isLoading: false,
       };
 
+    // --- Default Case ---
     default:
       return state;
   }

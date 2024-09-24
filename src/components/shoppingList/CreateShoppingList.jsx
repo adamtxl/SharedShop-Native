@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, Alert } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { createShoppingList } from '../../redux/actions/shoppingListActions'; // Import the createShoppingList action
-import DisplayUserItems from '../userList/displayUserItems'; // Make sure path matches
+import { createShoppingList } from '../../redux/actions/shoppingListActions';
+import DisplayUserItems from '../userList/DisplayUserItems';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from 'moment';
 
 const CreateShoppingList = ({ navigation }) => {
@@ -31,9 +32,24 @@ const CreateShoppingList = ({ navigation }) => {
 
     // Dispatch the create shopping list action
     const listData = { user_id: userId, list_name: listName };
-    dispatch(createShoppingList(listData, setShoppingListId)); // Pass setShoppingListId to get the list ID
+    dispatch(createShoppingList(listData))
+      .then(response => {
+        // Set the shopping list ID and creation date
+        setShoppingListId(response.payload.id);
+        setCreatedDate(moment().format('MMMM Do YYYY, h:mm:ss a'));
 
-    setCreatedDate(moment().format('MMMM Do YYYY, h:mm:ss a'));
+        // Show success message
+        Alert.alert('Success', 'Shopping list created successfully!');
+
+        // Clear input
+        setListName('');
+
+        // Redirect to the newly created shopping list
+        navigation.navigate('ShoppingListDetails', { listId: response.payload.id });
+      })
+      .catch(error => {
+        Alert.alert('Error', 'Failed to create the shopping list');
+      });
   };
 
   if (!userId) return <Text>Loading...</Text>;

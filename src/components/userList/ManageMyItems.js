@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Button } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import DisplayUserItems from './displayUserList'; // Leverage DisplayUserItems for displaying items
+import DisplayUserItems from './DisplayUserItems'; // Leverage DisplayUserItems for displaying items
 
 const ManageMyItems = ({ navigation }) => {
   const [userId, setUserId] = useState(null);

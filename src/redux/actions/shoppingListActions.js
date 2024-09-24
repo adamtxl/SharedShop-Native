@@ -53,3 +53,12 @@ export const addItemsToShoppingList = (listId, items) => ({
   type: ADD_ITEMS_TO_SHOPPING_LIST,
   payload: { listId, items },
 });
+
+export const FETCH_SHOPPING_LIST_DETAILS = 'FETCH_SHOPPING_LIST_DETAILS';
+export const FETCH_SHOPPING_LIST_DETAILS_SUCCESS = 'FETCH_SHOPPING_LIST_DETAILS_SUCCESS';
+export const FETCH_SHOPPING_LIST_DETAILS_FAILURE = 'FETCH_SHOPPING_LIST_DETAILS_FAILURE';
+
+export const fetchShoppingListDetails = (listId) => ({
+  type: FETCH_SHOPPING_LIST_DETAILS,
+  payload: listId,
+});

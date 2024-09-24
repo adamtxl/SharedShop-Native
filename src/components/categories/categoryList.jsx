@@ -7,7 +7,7 @@ import { Text, View, StyleSheet } from 'react-native';
 const CategoryList = ({ selectedCategory, handleCategoryChange }) => {
   const categories = useSelector((state) => state.category.categories);
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
     dispatch(fetchCategories());
   }, [dispatch]);
@@ -39,11 +39,11 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     borderWidth: 2,
     borderColor: 'gray',
-    padding: 0, // Remove padding so content fits inside the border
+    padding: 0,
   },
   picker: {
-    height: 200, // Adjust the height to make sure the picker items are visible
-    width: '100%', // Ensure it stretches to fill the width
+    height: 200,
+    width: '100%',
   },
 });
 
