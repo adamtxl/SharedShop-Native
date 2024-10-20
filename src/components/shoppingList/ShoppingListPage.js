@@ -5,8 +5,8 @@ import { fetchShoppingLists, addItemsToShoppingList } from '../../redux/actions/
 
 const ShoppingListPage = ({ navigation }) => {
   const dispatch = useDispatch();
-  const shoppingLists = useSelector(state => state.shoppingList.lists);
-  const isLoading = useSelector(state => state.shoppingList.isLoading); // Track loading state
+  const shoppingLists = useSelector(state => state.shoppingList?.lists || []); 
+    const isLoading = useSelector(state => state.shoppingList?.isLoading); // Track loading state
   const user = useSelector(state => state.user.user);
 
   useEffect(() => {

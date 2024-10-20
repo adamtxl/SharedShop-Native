@@ -24,6 +24,7 @@ const initialState = {
   details: {},             // Holds details of a specific shopping list
   error: null,             // Error messages (if any)
   isLoading: false,        // Loading state indicator
+  createdList: null,       // Holds the newly created shopping list
 };
 
 const shoppingListReducer = (state = initialState, action) => {
@@ -53,13 +54,13 @@ const shoppingListReducer = (state = initialState, action) => {
       return {
         ...state,
         lists: [...state.lists, action.payload],  // Add the new list to existing lists
+        createdList: action.payload,             // Store the newly created list here
         isLoading: false,
         error: null,
       };
 
     // --- Add Items to Shopping List Success ---
     case ADD_ITEMS_TO_SHOPPING_LIST_SUCCESS:
-      console.log('Items added to shopping list');
       return {
         ...state,
         isLoading: false,
@@ -116,10 +117,15 @@ const shoppingListReducer = (state = initialState, action) => {
         isLoading: false,
       };
 
+    // --- Clear createdList after it's used ---
+    case 'CLEAR_CREATED_LIST':
+      return {
+        ...state,
+        createdList: null, // Reset the created list
+      };
+
     // --- Default Case ---
     default:
       return state;
   }
 };
-
-export default shoppingListReducer;
