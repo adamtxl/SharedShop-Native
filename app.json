@@ -8,6 +8,7 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "jsEngine": "hermes",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -15,7 +16,8 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.adamtxl.SharedShopfrontend"
+      "bundleIdentifier": "com.adamtxl.SharedShopfrontend",
+      "jsEngine": "jsc"
     },
     "android": {
       "adaptiveIcon": {

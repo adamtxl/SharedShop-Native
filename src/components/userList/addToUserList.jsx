@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createUserItem } from '../../redux/actions/userItemsActions';
 import ItemForm from './ItemForm'; // Import new ItemForm component
+
 
 const AddToUserList = () => {
   const [itemName, setItemName] = useState('');
   const [category, setCategory] = useState('');
   const [description, setDescription] = useState('');
   const dispatch = useDispatch();
+  const userId = useSelector((state) => state.user.user?.id); // Ensure 'user' exists in your Redux store
+  console.log('User ID:', userId);
+
 
   const handleInputChange = (name, value) => {
     if (name === 'itemName') setItemName(value);
@@ -18,11 +22,12 @@ const AddToUserList = () => {
   const handleSubmit = () => {
     const newItem = {
       item_name: itemName,
-      category_id: category,  // Make sure category_id is passed correctly
-      user_id: 7,  // Example user ID
+      category_id: category, 
+      user_id: userId,  
       description: description,
     };
     dispatch(createUserItem(newItem));
+    console.log('Item added:', newItem);
     setItemName('');
     setCategory('');
     setDescription('');
