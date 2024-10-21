@@ -53,8 +53,8 @@ const shoppingListReducer = (state = initialState, action) => {
     case CREATE_SHOPPING_LIST_SUCCESS:
       return {
         ...state,
-        lists: [...state.lists, action.payload],  // Add the new list to existing lists
-        createdList: action.payload,             // Store the newly created list here
+        lists: [...state.lists, action.payload],  // Append the new list to the existing lists
+        createdList: action.payload,             // Store the newly created list
         isLoading: false,
         error: null,
       };

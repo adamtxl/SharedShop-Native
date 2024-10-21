@@ -5,6 +5,7 @@ import { createShoppingList } from '../../redux/actions/shoppingListActions';
 import DisplayUserItems from '../userList/DisplayUserItems';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from 'moment';
+import { clearCreatedList } from '../../redux/actions/shoppingListActions'; // Add this action
 
 const CreateShoppingList = ({ navigation }) => {
   const [listName, setListName] = useState('');
@@ -12,8 +13,8 @@ const CreateShoppingList = ({ navigation }) => {
   const [userId, setUserId] = useState(null);
   const dispatch = useDispatch();
 
-  const createdShoppingList = useSelector((state) => state.shoppingList.createdList); // Access created shopping list
-  const createError = useSelector((state) => state.shoppingList.error); // To handle errors
+  const createdShoppingList = useSelector((state) => state.shoppingList?.createdList ?? null);
+  const createError = useSelector((state) => state.shoppingList?.error ?? null);
 
   useEffect(() => {
     const fetchUserId = async () => {
@@ -27,21 +28,26 @@ const CreateShoppingList = ({ navigation }) => {
   }, []);
 
   // Watch for shopping list creation success
+
   useEffect(() => {
     if (createdShoppingList) {
-      // Set the created date and other info when the shopping list is created
       setCreatedDate(moment().format('MMMM Do YYYY, h:mm:ss a'));
-
-      // Show success message
+  
       Alert.alert('Success', 'Shopping list created successfully!');
-
-      // Redirect to the shopping list details page
-      navigation.navigate('ShoppingListDetails', { listId: createdShoppingList.id });
-
-      // Clear the input fields
+      
+      // Check if the createdShoppingList has an `id` before navigating
+      if (createdShoppingList.id) {
+        navigation.navigate('ShoppingListDetails', { listId: createdShoppingList.id });
+      }
+  
       setListName('');
+  
+      // Dispatch action to clear the created shopping list to reset the state
+      dispatch(clearCreatedList());
     }
-  }, [createdShoppingList]);
+  }, [createdShoppingList, dispatch]);
+  
+
 
   const createList = () => {
     if (!listName.trim()) {

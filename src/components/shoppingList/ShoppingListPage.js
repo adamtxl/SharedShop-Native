@@ -1,17 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, Button, FlatList, ActivityIndicator } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchShoppingLists, addItemsToShoppingList } from '../../redux/actions/shoppingListActions';
+import { fetchShoppingLists } from '../../redux/actions/shoppingListActions';
+import { createSelector } from 'reselect';
+
+// Ensure this is defined outside of the component
+const selectShoppingListState = (state) => state.shoppingList;
+
+export const selectShoppingLists = createSelector(
+  [selectShoppingListState],
+  (shoppingListState) => {
+    console.log('Shopping lists selector:', shoppingListState?.lists); // Debugging
+    return shoppingListState?.lists || [];
+  }
+);
 
 const ShoppingListPage = ({ navigation }) => {
   const dispatch = useDispatch();
-  const shoppingLists = useSelector(state => state.shoppingList?.lists || []); 
-    const isLoading = useSelector(state => state.shoppingList?.isLoading); // Track loading state
-  const user = useSelector(state => state.user.user);
+  const shoppingLists = useSelector(selectShoppingLists); // Use the memoized selector
+  const isLoading = useSelector((state) => state.shoppingList?.isLoading); // Track loading state
+  const user = useSelector((state) => state.user.user);
 
   useEffect(() => {
     if (user && user.id) {
       dispatch(fetchShoppingLists(user.id)); // Fetch shopping lists for the user on page load
+      console.log('shoppingLists:', shoppingLists); // Debugging
     }
   }, [dispatch, user]);
 
@@ -33,19 +46,17 @@ const ShoppingListPage = ({ navigation }) => {
     <View style={{ flex: 1, padding: 20 }}>
       <Text>Shopping Lists</Text>
       <Button title="Start New Shopping List" onPress={handleNewShoppingList} />
-      
-      {isLoading ? ( 
+
+      {isLoading ? (
         <ActivityIndicator size="large" color="#0000ff" /> // Show spinner while loading
+      ) : shoppingLists.length > 0 ? (
+        <FlatList
+          data={shoppingLists}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={renderShoppingList}
+        />
       ) : (
-        shoppingLists.length > 0 ? (
-          <FlatList
-            data={shoppingLists}
-            keyExtractor={item => item.id.toString()}
-            renderItem={renderShoppingList}
-          />
-        ) : (
-          <Text>No shopping lists found. Start by creating a new one!</Text>
-        )
+        <Text>No shopping lists found. Start by creating a new one!</Text>
       )}
     </View>
   );

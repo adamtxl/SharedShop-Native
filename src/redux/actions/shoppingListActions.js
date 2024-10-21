@@ -62,3 +62,7 @@ export const fetchShoppingListDetails = (listId) => ({
   type: FETCH_SHOPPING_LIST_DETAILS,
   payload: listId,
 });
+
+export const clearCreatedList = () => ({
+  type: 'CLEAR_CREATED_LIST',
+});
