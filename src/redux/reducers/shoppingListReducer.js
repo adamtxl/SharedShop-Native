@@ -130,3 +130,5 @@ const shoppingListReducer = (state = initialState, action) => {
       return state;
   }
 };
+
+export default shoppingListReducer;

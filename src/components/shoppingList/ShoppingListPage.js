@@ -18,12 +18,13 @@ export const selectShoppingLists = createSelector(
 const ShoppingListPage = ({ navigation }) => {
   const dispatch = useDispatch();
   const shoppingLists = useSelector(selectShoppingLists); // Use the memoized selector
-  const isLoading = useSelector((state) => state.shoppingList?.isLoading); // Track loading state
+    const isLoading = useSelector((state) => state.shoppingList?.isLoading); // Track loading state
   const user = useSelector((state) => state.user.user);
 
+  
   useEffect(() => {
-    console.log('User:', user); // Debugging user data
     if (user && user.id) {
+      console.log('Dispatching fetchShoppingLists action'); // Debugging dispatch
       dispatch(fetchShoppingLists(user.id)); // Fetch shopping lists for the user on page load
     }
   }, [dispatch, user]);

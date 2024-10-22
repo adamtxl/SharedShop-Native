@@ -14,7 +14,7 @@ import axios from '../../axiosConfig'; // Your axiosConfig
 
 // Saga to handle fetching shopping lists
 function* fetchShoppingListsSaga(action) {
-  console.log('Saga triggered: Fetch shopping lists'); // Check if the saga is running
+  console.log('Saga triggered: Fetch shopping lists'); // This should log when the saga is invoked
   try {
     const response = yield call(axios.get, `/api/shopping-list/user/${action.payload}`);
     console.log('API response:', response.data); 

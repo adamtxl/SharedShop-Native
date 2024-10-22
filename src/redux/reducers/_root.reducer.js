@@ -11,4 +11,6 @@ const rootReducer = combineReducers({
   shoppingList: shoppingList,
 });
   
+console.log('Root reducer structure:', rootReducer); // Log the structure of combined reducers
+
   export default rootReducer;
