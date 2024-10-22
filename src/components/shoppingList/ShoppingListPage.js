@@ -10,7 +10,7 @@ const selectShoppingListState = (state) => state.shoppingList;
 export const selectShoppingLists = createSelector(
   [selectShoppingListState],
   (shoppingListState) => {
-    console.log('Shopping lists selector:', shoppingListState?.lists); // Debugging
+    console.log('Shopping list state:', shoppingListState); // Debugging the state
     return shoppingListState?.lists || [];
   }
 );
@@ -22,11 +22,15 @@ const ShoppingListPage = ({ navigation }) => {
   const user = useSelector((state) => state.user.user);
 
   useEffect(() => {
+    console.log('User:', user); // Debugging user data
     if (user && user.id) {
       dispatch(fetchShoppingLists(user.id)); // Fetch shopping lists for the user on page load
-      console.log('shoppingLists:', shoppingLists); // Debugging
     }
   }, [dispatch, user]);
+  
+  useEffect(() => {
+    console.log('shoppingLists:', shoppingLists); // Debugging shoppingLists after fetching
+  }, [shoppingLists]);
 
   const handleNewShoppingList = () => {
     navigation.navigate('CreateShoppingList');

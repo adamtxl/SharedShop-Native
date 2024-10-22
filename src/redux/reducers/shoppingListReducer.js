@@ -42,6 +42,7 @@ const shoppingListReducer = (state = initialState, action) => {
 
     // --- Fetch All Shopping Lists Success ---
     case FETCH_SHOPPING_LISTS_SUCCESS:
+      console.log('Reducer: Updating lists with:', action.payload); // Debugging in the reducer
       return {
         ...state,
         lists: action.payload,
